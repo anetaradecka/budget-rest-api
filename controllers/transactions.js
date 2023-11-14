@@ -18,7 +18,7 @@ exports.getTransactions = (req, res, next) => {
 };
 
 exports.postNewTransaction = (req, res, next) => {
-  // backend validation
+  // collectiong errors from the server-side validation done through the middleware in routes
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -31,8 +31,9 @@ exports.postNewTransaction = (req, res, next) => {
     category: req.body.category,
     value: req.body.value,
     description: req.body.description,
-    date: req.body.createdAt,
+    date: req.body.date,
   });
+
   // Create post in db
   transaction
     .save()
