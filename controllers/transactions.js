@@ -28,10 +28,10 @@ exports.postNewTransaction = (req, res, next) => {
   }
   // transaction creation based on a model
   const transaction = new Transaction({
-    category: req.body.category,
-    value: req.body.value,
-    description: req.body.description,
-    date: req.body.date,
+    category: req.body.submitData.category,
+    value: req.body.submitData.value,
+    description: req.body.submitData.description,
+    date: req.body.submitData.date,
   });
 
   // Create post in db
