@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/transactions", transactionsRoutes);
-// app.use("/auth", authRoutes);
+app.use("/auth", authRoutes);
 // a unify way to show errors
 app.use((error, req, res, next) => {
   console.log(error);

@@ -7,16 +7,20 @@ const User = require("../models/user");
 exports.signup = (req, res, next) => {
   // collectiong errors from the server-side validation done through the middleware in routes
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed.");
+
     error.statusCode = 422;
-    // This will keep the original error and pass it through the middleware in app
+    // This will keep the original error and pass it through the middleware in app and show the errors array
     error.date = errors.array();
     throw error;
   }
+
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
+
   bcrypt
     .hash(password, 12)
     .then((hashedPassword) => {
@@ -44,6 +48,7 @@ exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   let loadedUser;
+
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
@@ -60,7 +65,7 @@ exports.login = (req, res, next) => {
         error.statusCode = 401;
         throw error;
       }
-      // We cann add some user data to the token
+      // We can add some user data to the token
       const token = jwt.sign(
         {
           email: loadedUser.email,

@@ -19,10 +19,16 @@ router.put(
             return Promise.reject("Email address already exists!");
           }
         });
-      })
-      .normalizeEmail(),
-    body("password").trim().isLength({ min: 5 }),
-    body("name").trim().not().isEmpty(),
+      }),
+    body("password")
+      .trim()
+      .isLength({ min: 5 })
+      .withMessage("Password must be at least 5 characters long"),
+    body("name")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Name field cannot be empty."),
   ],
   authController.signup
 );
