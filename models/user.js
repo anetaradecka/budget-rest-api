@@ -15,12 +15,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  transactions: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Transaction",
-    },
-  ],
+  transactions: Array,
+
+  // The following is used when we need to connect with another collection
+  // transactions: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: "Transaction",
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("User", userSchema);
