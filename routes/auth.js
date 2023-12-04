@@ -23,7 +23,7 @@ router.put(
     body("password")
       .trim()
       .isLength({ min: 5 })
-      .withMessage("Password must be at least 5 characters long"),
+      .withMessage("Password must be at least 5 characters long."),
     body("name")
       .trim()
       .not()

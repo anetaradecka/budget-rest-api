@@ -13,7 +13,9 @@ exports.signup = (req, res, next) => {
 
     error.statusCode = 422;
     // This will keep the original error and pass it through the middleware in app and show the errors array
-    error.date = errors.array();
+
+    error.data = errors.array();
+
     throw error;
   }
 
