@@ -76,7 +76,13 @@ exports.login = (req, res, next) => {
         "somesupersecretkey",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token: token, userId: loadedUser._id.toString() });
+      res
+        .status(200)
+        .json({
+          token: token,
+          userId: loadedUser._id.toString(),
+          name: loadedUser.name,
+        });
     })
     // At this point the error means that there is some issue with the data base
     .catch((error) => {
