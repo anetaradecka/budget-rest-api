@@ -48,6 +48,7 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
   const email = req.body.email;
+  console.log(email);
   const password = req.body.password;
   let loadedUser;
 
@@ -76,13 +77,11 @@ exports.login = (req, res, next) => {
         "somesupersecretkey",
         { expiresIn: "1h" }
       );
-      res
-        .status(200)
-        .json({
-          token: token,
-          userId: loadedUser._id.toString(),
-          name: loadedUser.name,
-        });
+      res.status(200).json({
+        token: token,
+        userId: loadedUser._id.toString(),
+        name: loadedUser.name,
+      });
     })
     // At this point the error means that there is some issue with the data base
     .catch((error) => {
