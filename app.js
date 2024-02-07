@@ -6,6 +6,9 @@ const cookieParser = require("cookie-parser");
 
 const csrf = require("csurf");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 const transactionsRoutes = require("./routes/transactions");
 const authRoutes = require("./routes/auth");
 const csrfProtection = csrf({
@@ -14,10 +17,8 @@ const csrfProtection = csrf({
 
 const app = express();
 
-const MONGODB_URI =
-  "mongodb+srv://aneta:Fafanka94!@shop.ypxo1ke.mongodb.net/budget";
+const MONGODB_URI = process.env.MONGODB_URI;
 
-// app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
 app.use(cookieParser());
 
@@ -33,8 +34,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-// app.use(csrfProtection);
 
 app.get("/getCSRFToken", csrfProtection, (req, res) => {
   res.json({ CSRFToken: req.csrfToken() });
