@@ -42,6 +42,7 @@ exports.postNewTransaction = (req, res, next) => {
   // transaction creation based on a model, userId is available from the decodedToken
   const transaction = new Transaction({
     category: req.body.submitData.category,
+    type: req.body.submitData.type,
     value: req.body.submitData.value,
     description: req.body.submitData.description,
     date: req.body.submitData.date,
