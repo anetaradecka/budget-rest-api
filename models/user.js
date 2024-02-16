@@ -26,4 +26,12 @@ const userSchema = new Schema({
   // ],
 });
 
+userSchema.methods.deleteTransaction = function (transactionId) {
+  const updatedTransactions = this.transactions.filter((item) => {
+    return item._id.toString() !== transactionId.toString();
+  });
+  this.transactions = updatedTransactions;
+  return this.save();
+};
+
 module.exports = mongoose.model("User", userSchema);

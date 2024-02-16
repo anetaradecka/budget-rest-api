@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const Transaction = require("../models/transaction");
 const User = require("../models/user");
 const { ObjectId } = require("mongodb");
+const user = require("../models/user");
 
 exports.getTransactions = (req, res, next) => {
   const id = new ObjectId(req.userId);
@@ -77,19 +78,19 @@ exports.postNewTransaction = (req, res, next) => {
 };
 
 exports.deleteTransaction = (req, res, next) => {
-  const transactionId = req.params.transactionId;
-  Transaction.findById(transactionId)
-    .then((transaction) => {
-      // check if the transaction even exists in db
-      if (!transaction) {
-        const error = new Error("Transaction hasn't been found");
+  const transactionId = new ObjectId(req.params.transactionId);
+  const userId = new ObjectId(req.userId);
+
+  User.findById(userId)
+    .then((user) => {
+      if (!userId) {
+        const error = new Error("User with this id hasn't been found");
         error.statusCode = 404;
         throw error;
       }
-      return Transaction.findByIdAndRemove(transactionId);
+      return user.deleteTransaction(transactionId);
     })
     .then((result) => {
-      console.log(result);
       res.status(200).json({ message: "Transaction deleted." });
     })
     .catch((err) => {
