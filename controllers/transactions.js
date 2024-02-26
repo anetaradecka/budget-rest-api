@@ -4,8 +4,17 @@ const User = require("../models/user");
 const { ObjectId } = require("mongodb");
 const user = require("../models/user");
 
+const filterForPagination = (transactions, page) => {
+  const PER_PAGE = 10;
+  const start = (page - 1) * PER_PAGE;
+  const end = start + PER_PAGE;
+  transactions = transactions.slice(start, end);
+  return transactions;
+};
+
 exports.getTransactions = (req, res, next) => {
   const id = new ObjectId(req.userId);
+  const page = req.query.page;
 
   User.findOne(id)
     .then((user) => {
@@ -15,9 +24,10 @@ exports.getTransactions = (req, res, next) => {
       return user.transactions;
     })
     .then((result) => {
+      const filteredItems = filterForPagination(result, page);
       res.status(200).json({
         message: "Transactions fetched successfully.",
-        transactions: result,
+        transactions: filteredItems,
       });
     })
     .catch((err) => {
