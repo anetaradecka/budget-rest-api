@@ -10,12 +10,9 @@ exports.signup = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed.");
-
     error.statusCode = 422;
     // This will keep the original error and pass it through the middleware in app and show the errors array
-
     error.data = errors.array();
-
     throw error;
   }
 
@@ -47,6 +44,17 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+  // collectiong errors from the server-side validation done through the middleware in routes
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = new Error("Validation failed.");
+    error.statusCode = 422;
+    // This will keep the original error and pass it through the middleware in app and show the errors array
+    error.data = errors.array();
+    throw error;
+  }
+
   const email = req.body.email;
   const password = req.body.password;
   let loadedUser;
@@ -54,7 +62,7 @@ exports.login = (req, res, next) => {
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
-        const error = new Error("A user with this email could not be found.");
+        const error = new Error("User with this email could not be found.");
         error.statusCode = 401;
         throw error;
       }
@@ -63,7 +71,7 @@ exports.login = (req, res, next) => {
     })
     .then((isEqual) => {
       if (!isEqual) {
-        const error = new Error("Wrong password!");
+        const error = new Error("Incorrect password");
         error.statusCode = 401;
         throw error;
       }
